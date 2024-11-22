@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Document</title>
+</head>
+<script type="text/javascript" src="../js/vue.js"></script>
+
+<body>
+    <div id="root">Hello, {{ name }}</div>
+</body>
+<script type="text/javascript">
+    Vue.config.productionTip = false;   // 关闭生产模式提示
+
+    // el的两种写法
+    // const v = new Vue({
+    //     // 进行对象实例和容器绑定 方式一
+    //     // el: '#root',
+    //     data: {
+    //         name: 'world'
+    //     }
+    // })
+
+    // setTimeout(() => {
+    //     // 调用原型 延迟绑定vue实例对象和容器 方式二
+    //     v.$mount('#root')
+    // }, 1000)
+
+    // data的两种写法
+    new Vue({
+        el: '#root',
+        // 方式一: 对象式
+        // data: {
+        //     name: 'World'
+        // }
+
+        // 方式二: 函数式,必须有return语句
+        //          由Vue管理的函数,一定不要写箭头函数,一旦写了箭头函数,this就不再是Vue实例了
+        //          学到组件时,data只能用函数式,不能用对象式,否则会报错
+        data: function(){
+            console.log(this)
+            return {
+                name: 'world!'
+            }
+        }
+    })
+</script>
+
+</html>
