@@ -4,7 +4,22 @@
         <meta charset="UTF-8" />
         <title>初识Vue</title>
     </head>
+    <script type="text/javascript" src="../js/vue.js"></script>
     <body>
-        <script type="text/javascript" scr="../js/vue.js"></script>
+        <!-- 创建一个Vue容器 -->
+        <div id="root">
+            <h1>Hello {{ name }}，{{ address }}!</h1>
+        </div>
+        <script type="text/javascript">
+            Vue.config.productionTip = false;   // 关闭生产模式提示
+            // 创建Vue实例
+            new Vue({
+                el:'#root',  // el(element)用于指示当前实例在为哪个容器服务，值为CSS选择器字符串
+                data:{  // 使用data配置对象定义Vue实例中的数据
+                    name: 'Howsco',
+                    address: '四川成都'
+                }
+            })
+        </script>
     </body>
 </html>
