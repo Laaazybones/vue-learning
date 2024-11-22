@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Document</title>
+</head>
+<script type="text/javascript" src="../js/vue.js"></script>
+<!-- 
+    MVVM模型: (通过VM连接数据模型和视图,建立双向链接)
+        1. M(模型Model): data中的数据
+        2. V(视图View): 模板代码
+        3. VM(视图模型ViewModel): Vue实例 
+    注意:
+        1. data中的所有属性都出现在了vm身上
+        2. vm身上的所有属性,以及Vue原型上所有属性,在Vue模板中都可以直接使用
+
+-->
+
+<body>
+    <!-- vue容器: 就是MVVM模型中的View模板视图 -->
+    <div id="root">
+        <h3>姓名: {{ name }}</h3>
+        <h3>年龄: {{ age }}</h3>
+        <h3>测试1: {{ $options }}</h3>
+        <h3>测试2: {{ _data }}</h3>
+    </div>
+</body>
+
+<script type="text/javascript">
+    Vue.config.productionTip = false;   // 关闭生产模式提示
+    // Vue实例对象,MVVM模型中的ViewModel
+    const vm = new Vue({
+        el: '#root',
+        // MVVM模型中的model数据模型
+        
+        data: {
+            name: 'Howsco',
+            age: 18,
+        }
+    })
+    console.log(vm)
+</script>
+
+</html>
