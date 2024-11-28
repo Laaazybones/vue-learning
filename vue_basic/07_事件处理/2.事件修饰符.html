@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Document</title>
+</head>
+<script type="text/javascript" src="../js/vue.js"></script>
+<style>
+    * {
+        margin-top: 20px;
+    }
+
+    .demo1 {
+        height: 50px;
+        background-color: skyblue;
+    }
+
+    .box1 {
+        padding: 5px;
+        background-color: skyblue;
+    }
+
+    .box2 {
+        padding: 5px;
+        background-color: orange;
+    }
+
+    .list {
+        width: 200px;
+        height: 200px;
+        background-color: peru;
+        overflow: auto;
+    }
+
+    li {
+        height: 100px;
+    }
+</style>
+
+<body>
+    <div id="root">
+        <h2>欢迎光临, {{ name }}</h2>
+        <!-- 1. prevent 阻止事件行为（常用） -->
+        <!-- 如下: 可以阻止跳转 -->
+        <a href="https://cocohub.top" @click.prevent="showInfo">点击跳转</a>
+        <!-- 2. 阻止事件冒泡（常用） -->
+        <!-- 什么是事件冒泡: 相同的事件行为发生多次 -->
+        <!-- 如下:事件不会向上传递执行 -->
+        <div class="demo1" @click="showInfo">
+            <button @click.stop="showInfo">点击按钮跳转</button>
+        </div>
+        <!-- 3. 事件只触发一次(常用) -->
+        <!-- 如下: 点击一次后,事件就失效 -->
+        <button @click.once="showInfo">点击按钮跳转</button>
+        <!-- 4. 使用事件的捕获模式 -->
+        <!-- 不使用的时候,点击div2时,会先进行事件捕获div1 ==> div2,然后事件冒泡执行行为div2 ==> div1 -->
+        <!-- 使用capture后,捕获到事件就立即执行 -->
+        <div class="box1" @click.capture="showMsg(1)">
+            div1
+            <div class="box2" @click="showMsg(2)">
+                div2
+            </div>
+        </div>
+        <!-- 5. self 只有当event.target是当前元素时才触发事件 -->
+        <!-- 当下面事件不使用self时, 通过事件冒泡, 先后执行button和div的click事件, 且两个事件的行为一致,即event.target相同-->
+        <!-- 当使用self后,点击button触发button的事件后,由于button的event.target与div的event.target不相同,因此div的点击事件不再执行 -->
+        <div class="demo1" @click.self="showInfo2">
+            <button @click="showInfo2">点击按钮跳转</button>
+        </div>
+        <!-- 6. passive 事件的默认行为立即执行,无需等待事件回调执行完毕 -->
+        <!-- @scroll 页面上滑条滚动时,就触发demo行为,不论是用鼠标滚轮还是键盘上下方向键,操作滑条时,事件demo执行,
+          当滑条滑动到底部后,再滑动,则不再触发demo行为 -->
+        <!-- @wheel 鼠标滚轮滚动时,触发demo行为,当鼠标滚轮(键盘上下方向键不行)将滑条滚到底部后,再进行鼠标滚轮滚动时,还是会触发demo事件 -->
+        <!-- 使用@wheel时,调用demo事件后,会先等待执行demo事件中的回调执行完毕后,再执行默认的滚动行为,
+          当回调执行很复杂时,会导致默认行为执行卡顿 -->
+        <!-- 使用passive后,就立即执行事件的默认@scroll时,就不存在先进行回调 -->
+        <ul @wheel.passive="demo" class="list">
+            <li>1</li>
+            <li>2</li>
+            <li>3</li>
+            <li>4</li>
+            <li>5</li>
+        </ul>
+    </div>
+    </div>
+
+</body>
+
+<script type="text/javascript">
+    Vue.config.productionTip = false;
+
+    new Vue({
+        el: '#root',
+        data: {
+            name: 'Howsco'
+        },
+        methods: {
+            showInfo(event) {
+                // event.preventDefault(); // js 阻止事件默认行为
+                // event.stopPropagation();    // js 阻止事件冒泡
+                alert('欢迎登陆！');
+            },
+            showMsg(msg) {
+                console.log(msg);
+            },
+            showInfo2(event) {
+                console.log(event.target);
+            },
+            demo() {
+                // console.log('@');
+                for (let i = 0; i < 10000; i++) {
+                    console.log('#')
+                }
+                console.log('===')
+            },
+        }
+    })
+</script>
+
+</html>
