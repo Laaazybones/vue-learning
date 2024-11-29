@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <title>姓名案例_methods实现</title>
+    <script type="text/javascript" src="../js/vue.js"></script>
+</head>
+
+
+<body>
+    <div id="root">
+        姓: <input type="text" v-model="firstName"> <br><br>
+        名: <input type="text" v-model="lastName"> <br><br>
+        全名: <span>{{ fullName() }}</span>
+        <!-- 每次修改data中绑定的属性时,都会刷新vue实例的调用,重新去请求一次实例中用到的方法 -->
+    </div>
+</body>
+
+<script type="text/javascript">
+    Vue.config.productionTip = false;
+
+    new Vue({
+        el: '#root',
+        data: {
+            firstName: '张',
+            lastName: '三',
+        },
+        methods: {
+            fullName() {
+                console.log('@');
+                return this.firstName + "-" + this.lastName;
+            }
+        }
+    })
+</script>
+
+</html>

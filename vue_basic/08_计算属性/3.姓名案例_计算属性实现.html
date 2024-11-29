@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <title>姓名案例_计算属性实现</title>
+    <script type="text/javascript" src="../js/vue.js"></script>
+</head>
+
+
+<body>
+    <!-- 
+        计算属性:
+            1. 定义: 要用的属性不存在, 要通过已有的属性(被Vue管理)进行计算得来
+            2. 原理: 底层借助了Object.defineProperty方法提供的getter和setter
+            3. get函数什么时候执行?
+                (1) 初次读取时会执行一次
+                (2) 当依赖的数据被修改时会再次调用
+            4. 优势: 与methods相比, 内部有缓存机制(复用), 效率更高, 调试更能清楚地知道计算属性是怎么的来的
+            5. 备注:
+                (1) 计算属性最终会出现在vm身上, 直接调用即可
+                (2) 如果计算属性要被修改, 那必须写set函数去响应修改, 且set函数中要同步修改所依赖的属性的值
+    -->
+    <div id="root">
+        姓: <input type="text" v-model="firstName"> <br><br>
+        名: <input type="text" v-model="lastName"> <br><br>
+        <!-- 计算属性具有缓存, 当出现相同调用时, 会优先读取缓存, 而不是再去调用一次 -->
+        <!-- methods实现就没有缓存, 有多少相同调用, 就会实际调用多少次 -->
+        全名: <span>{{ fullName }}</span> <br><br>
+        <!-- 全名: <span>{{ fullName }}</span> <br><br>
+        全名: <span>{{ fullName }}</span> <br><br>
+        全名: <span>{{ fullName }}</span> <br><br>
+        全名: <span>{{ fullName }}</span> -->
+        <!-- 每次修改data中绑定的属性时,都会刷新vue实例的调用,重新去请求一次实例中用到的方法 -->
+    </div>
+</body>
+
+<script type="text/javascript">
+    Vue.config.productionTip = false;
+
+    const vm = new Vue({
+        el: '#root',
+        data: {
+            firstName: '张',
+            lastName: '三',
+        },
+        computed: {
+            fullName: {
+                // get有什么用? 当有人读取fullName时, get就会被调用, 且返回值就作为fullName的值
+                // 不要写成 {{ fullName.get() }} 的形式, 因为Vue实例中已经将get()的返回值赋值给了fullName
+                // get什么时候调用? 1. 初次读取fullName时; 2. 所依赖的数据发生变化时.
+                get() {
+                    console.log('get被调用了');
+                    return this.firstName + '-' + this.lastName;
+                },
+                set(value) {
+                    console.log('set被调用了', value);
+                    const arr = value.split('-');
+                    this.firstName = arr[0];
+                    this.lastName = arr[1];
+                }
+            }
+        }
+    })
+</script>
+
+</html>
