@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <title>姓名案例_监视属性改写</title>
+    <script type="text/javascript" src="../js/vue.js"></script>
+</head>
+<!-- computed和watch之间的区别：
+        1. computed能完成的功能，watch一定能完成；
+        2. watch能完成的功能，computed不一定能完成，例如：watch可以进行异步调用，而computed不行
+    重要小原则：
+        1. 所有被vue管理的函数，最好写成普通函数，这样this的指向才是vm或组件实例对象。
+        2. 所有不被vue管理的函数（定时器回调函数、Ajax回调函数、Promise回调函数等（这些函数大多是js管理，不是vue管理）），
+           最好写成箭头函数，这样this指向才是vm或组件实例对象。
+-->
+
+<body>
+    <div id="root">
+        姓: <input type="text" v-model="firstName"> <br><br>
+        名: <input type="text" v-model="lastName"> <br><br>
+        全名: <span>{{ fullName }}</span> <br><br>
+    </div>
+</body>
+
+<script type="text/javascript">
+    Vue.config.productionTip = false;
+
+    const vm = new Vue({
+        el: '#root',
+        data: {
+            firstName: '张',
+            lastName: '三',
+            fullName: '张-三',
+        },
+
+        // 看起来相同的功能计算属性比监视属性写法更简单，但是两者有一个大区别
+        // 计算属性需要获取一个return返回值赋值给该计算属性，然后再交给vue模板进行调用，也就是说，计算属性不支持异步调用
+        // 而watch中是书写一个handler回调方法进行逻辑处理，可以进行异步操作
+        watch: {
+            firstName(newFirstName) {
+                this.fullName = newFirstName + '-' + this.lastName;
+            },
+            lastName(newLastName) {
+                this.fullName = this.firstName + '-' + newLastName;
+            }
+        }
+    })
+</script>
+
+</html>
