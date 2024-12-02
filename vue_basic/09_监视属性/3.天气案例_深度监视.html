@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <title>天气案例_深度监视</title>
+    <script type="text/javascript" src="../js/vue.js"></script>
+</head>
+
+
+<body>
+    <div id="root">
+        <h2>今天天气很{{ info }}</h2>
+        <button @click="changeWeather">点击切换天气</button>
+        <hr>
+        <h2>a的值为：{{ numbers.a }}</h2>
+        <button @click="numbers.a++">点击使a+1</button>
+        <h2>b的值为：{{ numbers.b }}</h2>
+        <button @click="numbers.b++">点击使b+1</button>
+    </div>
+</body>
+
+<script type="text/javascript">
+    Vue.config.productionTip = false;
+
+    const vm = new Vue({
+        el: '#root',
+        data: {
+            isHot: true,
+            numbers: {
+                a: 1,
+                b: 1,
+            }
+        },
+        computed: {
+            info() {
+                return this.isHot ? '炎热' : '凉爽';
+            }
+        },
+        methods: {
+            changeWeather() {
+                this.isHot = !this.isHot;
+            }
+        },
+        watch: {
+            isHot: {
+                handler(newValue, oldValue) {
+                    console.log('isHot被修改了', newValue, oldValue);
+                }
+            },
+            // 监视多级属性中某个属性的变化
+            // 'numbers.a': {
+            //     handler(newValue, oldValue) {
+            //         console.log('a被修改了', newValue, oldValue);
+            //     }
+            // },
+            
+            // Vue自身可以检测对象内部值的变化，但是默认的watch监视只能监视到第一层，需要监视到对象内部属性时，需要开启deep:true
+            // 深度监视：监视多级属性中所有属性的变化
+            numbers: {
+                deep: true,
+                handler(newValue, oldValue) {
+                    console.log('numbers被修改了', newValue, oldValue);
+                }
+            }
+        },
+    });
+</script>
+
+</html>
