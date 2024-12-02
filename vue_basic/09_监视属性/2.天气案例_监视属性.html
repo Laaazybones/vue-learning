@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <title>天气案例_监视属性</title>
+    <script type="text/javascript" src="../js/vue.js"></script>
+</head>
+
+
+<body>
+    <div id="root">
+        <h2>今天天气很{{ info }}</h2>
+        <button @click="changeWeather">点击切换天气</button>
+    </div>
+</body>
+
+<script type="text/javascript">
+    Vue.config.productionTip = false;
+
+    const vm = new Vue({
+        el: '#root',
+        data: {
+            isHot: true
+        },
+        computed: {
+            info() {
+                return this.isHot ? '炎热' : '凉爽';
+            }
+        },
+        methods: {
+            changeWeather() {
+                this.isHot = !this.isHot;
+            }
+        },
+        watch: {
+            // isHot: {
+            //     immediate: true,    // 初始化时让handler先调用一下
+            //     // handler什么时候使用？当isHot被修改时
+            //     // 实例属性和计算属性都能被检测
+            //     handler(newValue, oldValue) {
+            //         console.log('isHot被修改了', newValue, oldValue);
+            //     }
+            // }
+        },
+    });
+
+    // 当一开始就知道需要监控什么属性时，就使用上面的形式；当写完后随着用户使用，才知道还需要监视哪些属性时，用下面的形式。
+    // 两种形式写法一致
+    // watch 监视的第二种写法：需要先创建vm实例对象
+    vm.$watch('isHot', {
+        immediate: true,    
+        handler(newValue, oldValue) {
+            console.log('isHot被修改了', newValue, oldValue);
+        }
+    })
+</script>
+</html>
