@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <title>列表过滤</title>
+    <script type="text/javascript" src="../js/vue.js"></script>
+</head>
+
+<body>
+    <div id="root">
+        <h2>人员列表</h2>
+        <input type="text" placeholder="请输入名字" v-model="keyWord">
+        <ul>
+            <li v-for="(p, index) in filterPeople" :key="p.id">
+                {{ p.name }}-{{ p.age }}-{{ p.sex }}
+            </li>
+        </ul>
+    </div>
+</body>
+
+<script type="text/javascript">
+    Vue.config.productionTip = false;
+
+    // 监听属性实现方法
+    /* new Vue({
+        el: '#root',
+        data: {
+            keyWord: '',
+            people: [
+                { id: '001', name: '马冬梅', age: 18, sex: '女' },
+                { id: '002', name: '周冬雨', age: 19, sex: '女' },
+                { id: '003', name: '周杰伦', age: 20, sex: '男' },
+                { id: '004', name: '扁嘴伦', age: 21, sex: '男' },
+            ],
+            filterPeople: []
+        },
+        watch: {
+            keyWord: {
+                // 使用immediate使得初始化时就进行一次监听，这次监听的输入是空字符''，"str".indexOf('') === 0
+                immediate: true,
+                handler(value) {
+                    this.filterPeople = this.people.filter((p) => {
+                        return p.name.indexOf(value) !== -1;
+                    })
+                }
+            }
+        }
+    }) */
+
+    // 计算属性实现方式
+    new Vue({
+        el: '#root',
+        data: {
+            keyWord: '',
+            people: [
+                { id: '001', name: '马冬梅', age: 18, sex: '女' },
+                { id: '002', name: '周冬雨', age: 19, sex: '女' },
+                { id: '003', name: '周杰伦', age: 20, sex: '男' },
+                { id: '004', name: '扁嘴伦', age: 21, sex: '男' },
+            ]
+        },
+        computed: {
+            filterPeople() {
+                return this.people.filter((p) => {
+                    return p.name.indexOf(this.keyWord) !== -1;
+                })
+            }
+        }
+    })
+
+</script>
+
+</html>
