@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <title>vue监测数据改变的原理</title>
+    <script type="text/javascript" src="../js/vue.js"></script>
+</head>
+
+<body>
+    <div id="root">
+        <h1>学校信息</h1>
+        <h2>名称：{{ school.name }}</h2>
+        <h2>地址：{{ school.address }}</h2>
+        <button @click="addLeader">添加校长信息</button>
+        <h2>校长：{{ school.leader }}</h2>
+
+        <hr/>
+
+        <h1>学生信息</h1>
+        <h2>姓名：{{ student.name }}</h2>
+        <h2>年龄：真实{{ student.age.rAge }}  虚假{{ student.age.sAge }}</h2>
+        <button @click="addGender">添加性别，默认为男</button>
+        <h2 v-if="student.gender">性别：{{ student.gender }}</h2>
+        <h2>朋友列表</h2>
+        <ul>
+            <li v-for="(f, index) in student.friends" :key="index">
+                {{ f.name }} -- {{ f.age }}
+            </li>
+        </ul>
+    </div>
+</body>
+
+<script type="text/javascript">
+    Vue.config.productionTip = false;
+
+    const vm = new Vue({
+        el: '#root',
+        data: {
+            school: {
+                name: '新建小学',
+                address: '乐山市',
+            },
+            student: {
+                name: 'tom',
+                age: {
+                    rAge: 30,
+                    sAge: 18
+                },
+                friends: [
+                    { name: 'jerry', age: 33 },
+                    { name: 'tony', age: 34 }
+                ]
+            }
+        },
+        methods: {
+            // Vue.set() 这个api不能直接作用在vm实例及vm实例的根数据对象（如_data）身上，只能作用于vm的对象上
+            addGender() {
+                // Vue.set(this.student, 'gender', '男');
+                this.$set(this.student, 'gender', '男');
+            },
+            addLeader() {
+                Vue.set(this.school, 'leader', 'Howsco大帅哥');
+            }
+        },
+    })
+</script>
+</html>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <title>模拟vue进行对象数据监测</title>
+    <script type="text/javascript" src="../js/vue.js"></script>
+</head>
+
+<body>
+
+</body>
+
+<script type="text/javascript">
+    let data = {
+        name: '新建小学',
+        address: '乐山市'
+    }
+
+    // 创建实例对象来实现对data的监测
+    const obs = new Observer(data);
+    console.log(obs);
+
+    let vm = {};
+    vm._data = data = obs;
+
+    // 构造函数
+    function Observer(obj) {
+        // 汇总对象身上所有属性为一个数组
+        const keys = Object.keys(obj);
+
+        // 遍历属性数组，为每个属性编写getter和setter
+        keys.forEach((k)=>{
+            Object.defineProperty(this, k, {
+                get() {
+                    return obj[k];
+                },
+
+                set(val) {
+                    console.log('监测到数据被修改，生成虚拟DOM中...')
+                    obj[k] = val;
+                }
+
+            })
+        })
+    }
+</script>
+
+</html>
