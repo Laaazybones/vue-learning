@@ -39,7 +39,8 @@
                 // this.people[0].sex = '男';   // 奏效
 
                 // 这种写法vue无法监测到数据的改变
-                this.people[0] = { id: '001', name: '马老师', age: 60, sex: '男' };
+                // this.people[0] = { id: '001', name: '马老师', age: 60, sex: '男' };  // 不奏效
+                this.people.splice(0, 1, { id: '001', name: '马老师', age: 60, sex: '男' });    // 奏效
             }
         },  
     })
