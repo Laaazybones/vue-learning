@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <title>自定义指令</title>
+    <script type="text/javascript" src="../js/vue.js"></script>
+</head>
+
+<!-- 
+   需求1：定义一个v-big指令，和v-text功能类似，但会把绑定的数值放大10倍
+   需求2：定义一个v-fbind指令，和v-bind功能类似，但可以让其所绑定的input元素默认获取焦点
+
+   一、定义语法：
+        （1）局部指令：
+            new Vue() {
+                // 对象式
+                directives: {
+                    '指令名': {
+                        bind(element, binding){},
+                        inserted(element, binding){},
+                        update(element, binding){}
+                    }
+                }
+            }
+
+            或
+
+            new Vue() {
+                directives: {
+                    '指令名'(element, binding){
+                    
+                    }
+                }
+            }
+        （2）全局指令：
+            Vue.directive('指令名', function(element, binding){})
+            或
+            Vue.directive('指令名', {配置对象})
+
+    二、配置对象中常用的3个回调：
+        （1）bind：指令与元素成功绑定时调用
+        （2）inserted：指令所在元素被插入页面时调用
+        （3）update：指令所在模板结构被重新解析时调用
+
+    三、备注：
+        （1）指令定义时不加v-，但在使用时要加v-
+        （2）指令名如果是多个单词，要使用kebab-case命名方式，不要用camelCase命名。
+-->
+
+<body>
+    <div id="root">
+        <h2>Hello, Howsco!</h2>
+        <h2>
+            num现值: <span v-text="num"></span>
+        </h2>
+        <h2>
+            放大10倍后的num值：<span v-big="num"></span>
+            <!-- 放大10倍后的num值：<span v-big-number="num"></span> -->
+        </h2>
+        <button @click="num++">点击num+1</button>
+
+        <hr />
+
+        <input type="text" v-fbind:value="num">
+    </div>
+</body>
+
+<script type="text/javascript">
+    Vue.config.productionTip = false;
+    // 全局配置自定义指令
+    /* Vue.directive('big', function(element, binding){
+        element.innerText = binding.value * 10;
+    }); */
+
+    /* Vue.directive('fbind', {
+        // 指令与元素首次成功绑定时
+        bind(element, binding) {
+            console.log('fbind-bind', this);    // 指令中的this是Window，不是vm
+            element.value = binding.value;
+        },
+
+        // 指令绑定的元素被插入到页面时
+        // 有些标签元素操作需要卡插入页面的时点，使用函数式书写不能实现这么细的操作
+        inserted(element, binding) {
+            console.log('fbind-inserted', this);
+            element.focus();
+        },
+
+        // 指令所在的模板被重新解析时
+        update(element, binding) {
+            console.log('fbind-update', this);
+            element.value = binding.value;
+            element.focus();
+        },
+    }) */
+
+    new Vue({
+        el: '#root',
+        data: {
+            num: 1
+        },
+        // 指令集，两种书写方式：一、函数式；二、对象式
+        directives: {
+            // 第一个参数是指令所在标签元素，第二个参数是指令所在元素包含的绑定对象，包含绑定的数据值等
+            // big函数何时会被调用？1. 指令与元素首次成功绑定时；2. 指令所在的模板被重新解析时（不论是哪个数据被修改，只要是该模板内某个数据更新，都会重新调用指令）。
+            big(element, binding) {
+                console.log('big directive triggered!');
+                console.log('big', this);   // 指令中的this是Window，不是vm
+                element.innerText = binding.value * 10;
+            },
+
+            // 指令名为多个单词时，需要用短横线连接，全小写，引号包裹
+            // 'big-number'(element, binding) {
+            //     console.log('big directive triggered!');
+            //     element.innerText = binding.value * 10;
+            // },
+
+            // fbind(element, binding) {
+            //     element.value = binding.value;
+            // }
+
+            // 函数式写法相当于默认只定义了bind(){}, update(){}两个时点函数，没有定义inserted(){}时点
+            fbind: {
+                // 指令与元素首次成功绑定时
+                bind(element, binding) {
+                    console.log('fbind-bind', this);    // 指令中的this是Window，不是vm
+                    element.value = binding.value;
+                },
+
+                // 指令绑定的元素被插入到页面时
+                // 有些标签元素操作需要卡插入页面的时点，使用函数式书写不能实现这么细的操作
+                inserted(element, binding) {
+                    console.log('fbind-inserted', this);
+                    element.focus();
+                },
+
+                // 指令所在的模板被重新解析时
+                update(element, binding) {
+                    console.log('fbind-update', this);
+                    element.value = binding.value;
+                    element.focus();
+                },
+            }
+        }
+    })
+</script>
+
+</html>
