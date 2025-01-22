@@ -1,10 +1,26 @@
 <template>
-  
+  <div>
+    <School></School>
+    <Student></Student>
+  </div>
 </template>
 
 <script>
-export default {
+// 引入组件
+import School from './School.vue';
+import School from './School.vue'
+import Student from './Student.vue';
+import Student from './Student.vue'
 
+export default {
+  components: { Student },
+    name: 'App',
+    template: `<App></App>`,
+    // 注册组件
+    component: {
+        School,
+        Student
+    }
 }
 </script>
 
