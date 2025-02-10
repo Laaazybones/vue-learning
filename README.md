@@ -35,6 +35,7 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
     获取：this.$refs.xxx 
 
 ## props配置项
+
 功能：让组件接收外部传过来的数据，步骤：
 1. 传递数据：
     `<Demo name="xxx"/>`
@@ -54,3 +55,49 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
         }
     }
 备注：props是只读的，Vue底层会监测我们对props的修改，如果进行了修改，就会发出警告，如果业务需求确实需要对props传参进行修改，那么就需要复制一份props数据到data中，然后对data中复制后的数据进行操作。
+
+## mixin(混入)
+功能：可以把多个组件公用的配置提取成一个混入对象
+
+用法：
+
+1. 第一步定义混合，例如：
+```javascript
+{
+    data() {
+        x: 100,
+        y: 200
+    },
+    methods: {
+        showName() {
+            console.log('Hello!')
+        }
+    }
+}
+```
+
+2. 第二步使用混合：
+```javascript
+// 法一： 局部使用
+// 在组件中：
+import {mixin1, mixin2} from './mixin'
+
+export default {
+    name: 'MySchool',
+    data() {
+        x: 300
+    },
+    mixins: [mixin, mixin2]
+}
+                
+// 法二： 全局使用
+// 在main.js文件中： 
+import {mixin1, mixin2} from './mixin'
+
+Vue.mixin(mixin1)
+Vue.mixin(mixin2)
+                
+```
+            
+        
+            
