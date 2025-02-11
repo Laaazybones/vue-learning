@@ -39,6 +39,8 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 功能：让组件接收外部传过来的数据，步骤：
 1. 传递数据：
     `<Demo name="xxx"/>`
+
+    > **注意：** 项目中一般这样写：`<Demo :obj="xxx">` <br> 添加冒号后，引号中的内容就作为js表达式进行计算处理了，不再单纯作为字符串传递。
 2. 接收数据：
     - 方式一（只接收）
     props: ['name']

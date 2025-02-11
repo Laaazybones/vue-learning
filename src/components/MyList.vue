@@ -1,8 +1,6 @@
 <template>
   <ul class="todo-main">
-    <MyItem/>
-    <MyItem/>
-    <MyItem/>
+    <MyItem v-for="item in todoList" :key="item.id" :todo="item"/>
   </ul>
 </template>
 
@@ -11,7 +9,16 @@ import MyItem from './MyItem';
 
 export default {
     name: 'MyList',
-    components: {MyItem}
+    components: {MyItem},
+    data() {
+        return {
+            todoList: [
+                {id: '001', name: '吃饭', completed: true},
+                {id: '002', name: '睡觉', completed: false},
+                {id: '003', name: '打豆豆', completed: true}
+            ]
+        }
+    }
 }
 </script>
 
