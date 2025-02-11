@@ -127,3 +127,16 @@ export default {
 ```
 
 使用插件： `Vue.use(xxx)`
+
+## scoped样式
+作用：让样式在局部组件中生效，防止样式冲突。
+
+（每个组件都可以使用 `<style></style>` 来设置样式，但是当vue进行vm挂载时，所有组件地style样式会被放在一起解析，此时如果有不同组件中存在同名样式，在App.vue中先引入的样式就会被后引入的样式覆盖。）
+
+写法：
+
+```javascript
+<style scoped>
+
+<style>
+```
