@@ -2,8 +2,8 @@
     <div id="root">
         <div class="todo-container">
             <div class="todo-wrap">
-                <MyHeader/>
-                <MyList/>
+                <MyHeader :addTodo="addTodo"/>
+                <MyList :todoList="todoList"/>
                 <MyFooter/>
             </div>
         </div>
@@ -17,7 +17,22 @@ import MyList from './components/MyList'
 
 export default {
     name: 'App',
-    components: {MyHeader, MyFooter, MyList}
+    components: {MyHeader, MyFooter, MyList},
+    data() {
+        return {
+            todoList: [
+                {id: '001', name: '吃饭', completed: true},
+                {id: '002', name: '睡觉', completed: false},
+                {id: '003', name: '打豆豆', completed: true}
+            ]
+        }
+    },
+    methods: {
+        addTodo(todoObj) {
+            // console.log('App组件方法调用，传入参数：', x);
+            this.todoList.unshift(todoObj);
+        }
+    }
 }
 </script>
 
