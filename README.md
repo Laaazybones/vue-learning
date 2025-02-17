@@ -167,3 +167,38 @@ export default {
     `v-model` 绑定的值不能是 `props`传过来的值，因为 `props` 是不能被修改的。
 
 4. `props` 穿过来的值若是对象类型的值，修改对象中的属性时Vue不会报错，但不推荐这样做。
+
+
+## WebStorage本地化存储
+
+1. 存储内容大小一般支持5MB大小（不同浏览器可能不同）
+
+2. 浏览器端通过 `Window.localStorage` 和 `Window.sessionStorage` 属性来实现本地化存储机制
+
+3. 相关API:
+    - `xxxStorage.setItem('key', 'value');`
+
+        该方法接收一个键值对作为参数进行存储，如果键已经存在，则覆写该键对应的值。
+
+    - `xxxStorage.getItem('key');`
+
+        该方法接收一个键作为参数，返回键对应的值。
+
+    -  `xxxStorage.removeItem('key');`
+
+        该方法接收一个键作为参数，清除该键值对。
+
+    -  `xxxStorage.clearItem();`
+
+        该方法用于清除所有键值对。
+
+
+4. 备注：
+
+    - SessionStorage 存储的内容随着浏览器关闭而丢失。
+
+    - LocalStorage 存储的内容需要手动清除才会消失（调用API或清空浏览器缓存）。
+
+    - `xxxStorage.getItem('key');` 如果 `key` 不存在，则返回 `null` 。
+
+    - `JSON.parse(null)` 返回值也为 `null` 。

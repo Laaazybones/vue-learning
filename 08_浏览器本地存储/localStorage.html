@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title>localStorage</title>
+    </head>
+    <body>
+        <h2>localStorage</h2>
+        <button onclick="saveData()">点我保存数据</button>
+        <br>
+        <br>
+        <button onclick="readData()">点我读取数据</button>
+        <br>
+        <br>
+        <button onclick="deleteData()">点我删除一个数据</button>
+        <br>
+        <br>
+        <button onclick="deleteAllData()">点我清除所有数据</button>
+
+        <script>
+            function saveData() {
+                let p = {"name": "张三", "age": "18"}
+                window.localStorage.setItem('msg', 'hello');
+                window.localStorage.setItem('msg2', 999);
+                window.localStorage.setItem('person', JSON.stringify(p));
+            }
+            
+            function readData() {
+                console.log(localStorage.getItem('msg'));
+                console.log(localStorage.getItem('msg2'));
+                console.log(JSON.parse(localStorage.getItem('person')));
+
+                // 读取不存在的内容，返回null
+                console.log(JSON.parse(localStorage.getItem('person2')));
+                console.log(JSON.parse(localStorage.getItem('msg99')));
+            }
+
+            function deleteData() {
+                localStorage.removeItem('msg2');
+            }
+
+            function deleteAllData() {
+                localStorage.clear();
+            }
+        </script>
+    </body>
+</html>
