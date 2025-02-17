@@ -3,14 +3,29 @@
     <label>
         <input type="checkbox"/>
     </label>
-    <span>已完成0</span> / 全部2
+    <span>已完成{{ completedTodo }}</span> / 全部{{ todoList.length }}
     <button class="btn btn-danger">清除已完成任务</button>
   </div>
 </template>
 
 <script>
 export default {
-    name: 'MyFooter'
+    name: 'MyFooter',
+    props: ['todoList'],
+    computed: {
+        // 计算已完成的todo
+        completedTodo() {
+            /* const completedCount = this.todoList.reduce((pre, todo) => {
+                console.log('@', pre)
+                return pre + (todo.completed ? 1 : 0)
+            }, 0)
+            console.log('completedCount = ', completedCount)
+            return completedCount */
+
+            // 简写
+            return this.todoList.reduce((pre, todo) => pre + (todo.completed ? 1 : 0), 0)
+        }
+    }
 }
 </script>
 
