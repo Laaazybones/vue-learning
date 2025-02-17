@@ -4,7 +4,7 @@
             <div class="todo-wrap">
                 <MyHeader :addTodo="addTodo"/>
                 <MyList :todoList="todoList" :checkTodo="checkTodo" :deleteTodo="deleteTodo"/>
-                <MyFooter :todoList="todoList"/>
+                <MyFooter :todoList="todoList" :checkAllTodo="checkAllTodo" :clearCompletedTodo="clearCompletedTodo"/>
             </div>
         </div>
     </div>
@@ -43,6 +43,18 @@ export default {
         deleteTodo(id) {
             this.todoList = this.todoList.filter((todo) => {
                 return todo.id !== id
+            })
+        },
+        // 勾选或取消勾选所有todo
+        checkAllTodo(completedFlag) {
+            this.todoList.forEach((todo) => {
+                todo.completed = completedFlag
+            })
+        },
+        // 清除所有勾选已完成的todo
+        clearCompletedTodo() {
+            this.todoList = this.todoList.filter((todo) => {
+                return !todo.completed
             })
         }
     }
