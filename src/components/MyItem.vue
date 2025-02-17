@@ -8,7 +8,7 @@
             <!-- <input type="checkbox" v-model="todo.completed"/> -->
             <span>{{ todo.name }}</span>
         </label>
-        <button class="btn btn-danger" style="display:none">删除</button>
+        <button class="btn btn-danger" @click="handleDelete(todo.id)">删除</button>
     </li>
 </template>
 
@@ -16,12 +16,18 @@
 export default {
     name: 'MyItem',
     // 声明组件间数据传递
-    props: ['todo', 'checkTodo'],
+    props: ['todo', 'checkTodo', 'deleteTodo'],
     methods: {
         // 处理复选框勾选
         handleCheck(id) {
             // 调用App组件方法
             this.checkTodo(id);
+        },
+        // 处理删除
+        handleDelete(id) {
+            if (confirm('确认删除吗？')) {
+                this.deleteTodo(id)
+            }
         }
     }
 }
@@ -60,5 +66,13 @@ li:before {
 
 li:last-child {
     border-bottom: none;
+}
+
+li:hover {
+    background-color: #ddd;
+}
+
+li:hover button {
+    display: block;
 }
 </style>
