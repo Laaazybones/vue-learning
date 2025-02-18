@@ -3,7 +3,7 @@
     <h1>{{ msg }}</h1>
 
     <!-- 通过父组件向子组件传递函数类型的props来实现：子给父传递数据 -->
-    <MySchool :getSchoolName="getSchoolName" />
+    <MySchool :getSchoolName="getSchoolName"/>
 
     <!-- 通过父组件向子组件自定义绑定事件来实现：子给父传递数据（第一种写法：通过v-on或@） -->
     <!-- <MyStudent v-on:getStudentName="onGetStudentName"/> -->
@@ -11,8 +11,9 @@
     <!-- 只允许触发一次 -->
     <!-- <MyStudent @getStudentName.once="onGetStudentName" /> -->
 
+
     <!-- 通过父组件向子组件自定义绑定事件来实现：子给父传递数据（第二种写法：通过ref，通过mounted钩子函数，更灵活） -->
-    <MyStudent ref="student" />
+    <MyStudent ref="student"  @demo="m1"/>
   </div>
 </template>
 
@@ -36,6 +37,9 @@ export default {
       // console.log('APP接收到学生名称：', name);
       // 可以接收多个参数
       console.log('APP接收到学生名称：', name, params);
+    },
+    m1() {
+      console.log('demo自定义组件被调用了！')
     }
   },
   mounted() {
