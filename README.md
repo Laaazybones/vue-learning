@@ -202,3 +202,49 @@ export default {
     - `xxxStorage.getItem('key');` 如果 `key` 不存在，则返回 `null` 。
 
     - `JSON.parse(null)` 返回值也为 `null` 。
+
+
+## 组件的自定义事件
+
+1. 这是一种组件间的通信方式，适用于：<font color="red">**子组件 ===> 父组件**</font>
+
+2. 使用场景：A是父组件，B是子组件，B想给A传数据，那么就要在A中给B绑定自定义事件（事件的回调函数定义在A中）。
+
+3. 绑定自定义事件：
+
+    - 法一：在父组件中
+
+    `<Demo v-on:getStudentName="getStudentNameFunc">` 或 `<Demo @getStudentName="getStudentNameFunc">`
+
+    - 法二：在父组件中
+
+    ```javascript
+    <Demo ref="test">
+    ...
+    ...
+    mounted() {
+        this.$refs.test.$on('getStudentName', this.getStudentNameFunc)
+    }
+    ```
+
+    法二这种写法相比法一更灵活。
+
+    - 若想让自定义事件只触发一次，可以这样 ：`this.$refs.test.$once` 或 `@getStudentName.once`
+
+4. 触发自定义事件
+
+    在子组件中：
+
+    `this.$emit('getStudentName', param1, param2, param_n)`
+
+5. 解绑自定义事件
+
+    ```javascript
+    this.$off('getStudentName') // 解绑一个事件
+    this.$off(['getStudentName','getSchoolName']) // 解绑多个事件
+    this.$off() // 解绑所有事件
+    ```
+
+6. 组件上也可以绑定原生DOM事件，需要使用 `native` 修饰符，例如：`@click.native="showName"`
+
+7. **注意：** 通过 `this.$refs.test.$on('getStudentName', 回调函数)` 绑定自定义事件时，<font color="red">回调函数要么配置在methods中，要么就用箭头函数写在 `$on()` 里，否则 `this` 的指向会出现问题</font>。
