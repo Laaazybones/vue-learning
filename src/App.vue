@@ -20,11 +20,8 @@ export default {
     components: {MyHeader, MyFooter, MyList},
     data() {
         return {
-            todoList: [
-                {id: '001', name: '吃饭', completed: true},
-                {id: '002', name: '睡觉', completed: false},
-                {id: '003', name: '打豆豆', completed: true}
-            ]
+            // 初始化时取本地存储数据
+            todoList: JSON.parse(localStorage.getItem('todoList')) || []
         }
     },
     methods: {
@@ -56,6 +53,16 @@ export default {
             this.todoList = this.todoList.filter((todo) => {
                 return !todo.completed
             })
+        }
+    },
+    watch: {
+        // 使用监视属性监视todoList的改变
+        todoList: {
+            // 开启深度监视
+            deep:true,
+            handler(value) {
+                localStorage.setItem('todoList', JSON.stringify(value))
+            }
         }
     }
 }
