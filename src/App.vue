@@ -1,114 +1,62 @@
 <template>
-    <div id="root">
-        <div class="todo-container">
-            <div class="todo-wrap">
-                <MyHeader :addTodo="addTodo"/>
-                <MyList :todoList="todoList" :checkTodo="checkTodo" :deleteTodo="deleteTodo"/>
-                <MyFooter :todoList="todoList" :checkAllTodo="checkAllTodo" :clearCompletedTodo="clearCompletedTodo"/>
-            </div>
-        </div>
-    </div>
+  <div class="app">
+    <h1>{{ msg }}</h1>
+
+    <!-- 通过父组件向子组件传递函数类型的props来实现：子给父传递数据 -->
+    <MySchool :getSchoolName="getSchoolName" />
+
+    <!-- 通过父组件向子组件自定义绑定事件来实现：子给父传递数据（第一种写法：通过v-on或@） -->
+    <!-- <MyStudent v-on:getStudentName="onGetStudentName"/> -->
+    <!-- <MyStudent @getStudentName="onGetStudentName"/> -->
+    <!-- 只允许触发一次 -->
+    <!-- <MyStudent @getStudentName.once="onGetStudentName" /> -->
+
+    <!-- 通过父组件向子组件自定义绑定事件来实现：子给父传递数据（第二种写法：通过ref，通过mounted钩子函数，更灵活） -->
+    <MyStudent ref="student" />
+  </div>
 </template>
 
 <script>
-import MyHeader from './components/MyHeader'
-import MyFooter from './components/MyFooter'
-import MyList from './components/MyList'
+import MySchool from './components/MySchool.vue'
+import MyStudent from './components/MyStudent.vue';
 
 export default {
-    name: 'App',
-    components: {MyHeader, MyFooter, MyList},
-    data() {
-        return {
-            // 初始化时取本地存储数据
-            todoList: JSON.parse(localStorage.getItem('todoList')) || []
-        }
-    },
-    methods: {
-        // 添加一个todo
-        addTodo(todoObj) {
-            // console.log('App组件方法调用，传入参数：', x);
-            this.todoList.unshift(todoObj);
-        },
-        // 勾选或取消勾选一个todo
-        checkTodo(id) {
-            this.todoList.forEach((todo) => {
-                if (todo.id === id) todo.completed = !todo.completed
-            })
-        },
-        // 删除一个todo
-        deleteTodo(id) {
-            this.todoList = this.todoList.filter((todo) => {
-                return todo.id !== id
-            })
-        },
-        // 勾选或取消勾选所有todo
-        checkAllTodo(completedFlag) {
-            this.todoList.forEach((todo) => {
-                todo.completed = completedFlag
-            })
-        },
-        // 清除所有勾选已完成的todo
-        clearCompletedTodo() {
-            this.todoList = this.todoList.filter((todo) => {
-                return !todo.completed
-            })
-        }
-    },
-    watch: {
-        // 使用监视属性监视todoList的改变
-        todoList: {
-            // 开启深度监视
-            deep:true,
-            handler(value) {
-                localStorage.setItem('todoList', JSON.stringify(value))
-            }
-        }
+  name: 'App',
+  components: { MySchool, MyStudent },
+  data() {
+    return {
+      msg: '你好啊！'
     }
+  },
+  methods: {
+    getSchoolName(name) {
+      console.log('APP接收到学校名称：', name);
+    },
+    onGetStudentName(name, ...params) {
+      // console.log('APP接收到学生名称：', name);
+      // 可以接收多个参数
+      console.log('APP接收到学生名称：', name, params);
+    }
+  },
+  mounted() {
+    // this.$refs.student 可以拿到被student标记的组件实例对象
+    // $on() 可以调用该组件实例对象身上的自定义事件，然后调用方法
+    this.$refs.student.$on('getStudentName', this.onGetStudentName)
+    // 只能调用一次
+    // this.$refs.student.$once('getStudentName', this.onGetStudentName)
+
+    // 需求：等待3秒后再绑定事件
+    /* setTimeout(() => {
+      this.$refs.student.$on('getStudentName', this.onGetStudentName)
+    }, 3000); */
+  }
+
 }
 </script>
 
 <style>
-    body {
-        background: #fff;
-    }
-
-    .btn {
-        display: inline-block;
-        padding: 4px 12px;
-        margin-bottom: 0;
-        font-size: 14px;
-        line-height: 20px;
-        text-align: center;
-        vertical-align: middle;
-        cursor: pointer;
-        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
-        border-radius: 4px;
-    }
-
-    .btn-danger {
-        color: #fff;
-        background-color: #da4f49;
-        border: 1px solid #bd362f;
-    }
-
-    .btn-danger:hover {
-        color: #fff;
-        background-color: #bd362f;
-    }
-
-    .btn:focus {
-        outline: none;
-    }
-
-    .todo-container {
-        width: 600px;
-        margin: 0 auto;
-    }
-
-    .todo-container .todo-wrap {
-        padding: 10px;
-        border: 1px solid #ddd;
-        border-radius: 5px;
-    }
+.app {
+  background-color: gray;
+  padding: 5px;
+}
 </style>
