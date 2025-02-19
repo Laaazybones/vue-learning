@@ -248,3 +248,52 @@ export default {
 6. 组件上也可以绑定原生DOM事件，需要使用 `native` 修饰符，例如：`@click.native="showName"`
 
 7. **注意：** 通过 `this.$refs.test.$on('getStudentName', 回调函数)` 绑定自定义事件时，<font color="red">回调函数要么配置在methods中，要么就用箭头函数写在 `$on()` 里，否则 `this` 的指向会出现问题</font>。
+
+
+## 全局事件总线（GlobalEventBus）
+
+1. 这是一种组件间通信的方式，适用于 <font color="red">任意组件间的通信</font>。
+
+2. 安装全局事件总线：
+
+    ```javascript
+    new Vue({
+        el: '#app',
+        render: h => h(App),
+        // ......
+        beforeCreated() {
+            Vue.prototype.$bus = this // 安装全局事件总线，$bus就是当前创建的vm
+        },
+        // ......
+    })
+    ```
+
+3. 使用事件总线：
+
+    - 接收数据：A组件想要接收数据，则在A组件中给 `$bus` 绑定自定义事件，事件的<font color="red">回调在A组件中定义</font>
+
+        ```javascript
+        methods: {
+            getStuName(value) {
+                // .....
+            }
+        }
+
+        // ......
+
+        mounted() {
+            this.$bus.$on('demo', this.getStuName)
+        }
+        ```
+
+    - 提供数据：在B组件的方法中 `this.$bus.$emit('demo', 数据)`
+
+
+4. 最好在绑定自定义事件的组件A中手动解绑自定义事件：
+
+    ```javascript
+    // ......
+    beforeDestroy() {
+        this.$bus.$off('demo')
+    }
+    ```
