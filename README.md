@@ -297,3 +297,37 @@ export default {
         this.$bus.$off('demo')
     }
     ```
+
+
+## 消息订阅与发布（pubsub）
+
+1. 一种组件间通信的方式，适用于<font color="red">任意组件间通信</font>。
+
+2. 使用步骤：
+
+    （1）安装pubsub：`npm i pubsub-js`
+
+    （2）引入：`import pubsub from 'pubsub-js'`
+
+    （3）接收数据：A组件想要接收数据，则在A组件中订阅消息，订阅的<font color="red">回调函数写在A组件中</font>。
+
+        ```javascript
+        methods: {
+            demo(data) {
+                console.log('...')
+                // ......
+            }
+        }
+
+        mounted() {
+            this.pubId = pubsub.subscribe('msgNameDemo', this.demo);    // 订阅消息
+        }
+
+        beforeDestroy() {
+            pubsub.unsubscribe(this.pubId)
+        }
+        ```
+    
+    （4）提供数据：`pubsub.publish('msgNameDemo', 数据)`
+
+    （5）最好在 `beforeDestroy` 钩子函数中使用 `pubsub.unsubscribe(pubId)` 取消订阅消息。
