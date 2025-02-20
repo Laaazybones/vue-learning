@@ -6,10 +6,16 @@
                 原则上props只允许单项数据传递。 -->
             <!-- 使用下面的方法控制台不报错是因为，vue的props只能检测到对象地址级别的数据更改，对象中属性的更改检测不到 -->
             <!-- <input type="checkbox" v-model="todo.completed"/> -->
-            <span>{{ todo.name }}</span>
+            <span v-show="!todo.isEdit">{{ todo.name }}</span>
+            <input 
+                v-show="todo.isEdit" 
+                type="text" 
+                :value="todo.name"
+                @blur="handleBlur(todo, $event)"
+            >
         </label>
         <button class="btn btn-danger" @click="handleDelete(todo.id)">删除</button>
-        <button class="btn btn-edit">编辑</button>
+        <button v-show="!todo.isEdit" class="btn btn-edit" @click="handleEdit(todo)">编辑</button>
     </li>
 </template>
 
@@ -33,6 +39,23 @@ export default {
                 // this.$bus.$emit('deleteTodo', id)
                 pubsub.publish('deleteTodo', id)
             }
+        },
+        // 处理编辑
+        handleEdit(todo) {
+            if (todo.hasOwnProperty('isEdit')) {
+                todo.isEdit = true
+            } else {
+                // 当需要给对象后添加一个新属性时，需要使用this.$set来补全属性的getter和setter
+                console.log('handleEdit, todo上没有isEdit属性，追加一个')
+                this.$set(todo, 'isEdit', true)
+            }
+        },
+        // 处理输入框焦点，当输入框丢失焦点时，将输入框变为真正的文字，此时需要在这里真实处理数据修改操作
+        // $event用于接收输入框输入的文字
+        handleBlur(todo, event) {
+            if (event.target.value.trim() === '') return alert('不允许输入为空！')
+            todo.isEdit = false
+            this.$bus.$emit('updateTodoName', todo.id, event.target.value)
         }
     }
 }

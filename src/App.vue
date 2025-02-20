@@ -37,6 +37,12 @@ export default {
                 if (todo.id === id) todo.completed = !todo.completed
             })
         },
+        // 更新todo的名称
+        updateTodoName(id, newName) {
+            this.todoList.forEach((todo) => {
+                if (todo.id === id) todo.name = newName
+            })
+        },
         // 删除一个todo
         deleteTodo(_, id) {
             this.todoList = this.todoList.filter((todo) => {
@@ -70,11 +76,13 @@ export default {
         // 使用全局事件总线绑定自定义组件事件
         this.$bus.$on('checkTodo', this.checkTodo)
         // this.$bus.$on('deleteTodo', this.deleteTodo)
+        this.$bus.$on('updateTodoName', this.updateTodoName)
         this.pubId = pubsub.subscribe('deleteTodo', this.deleteTodo)
     },
     beforeDestroy() {
         // this.$bus.$off(['checkTodo', 'deleteTodo'])
         pubsub.unsubscribe(this.pubId)
+        this.$bus.$off('updateTodoName')
     }
 }
 </script>
