@@ -331,3 +331,12 @@ export default {
     （4）提供数据：`pubsub.publish('msgNameDemo', 数据)`
 
     （5）最好在 `beforeDestroy` 钩子函数中使用 `pubsub.unsubscribe(pubId)` 取消订阅消息。
+
+
+## nextTick
+
+1. 语法：`this.$nextTick(回调函数)`
+
+2. 作用：在下一次DOM更新结束后执行其内部的回调方法。
+
+3. 什么时候用：当改变数据后，要基于更新后的新DOM进行某些操作时，要在nextTick所指定的回调函数中进行。
