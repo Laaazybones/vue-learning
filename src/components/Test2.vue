@@ -1,0 +1,40 @@
+<template>
+    <div>
+        <button @click="isShow = !isShow">显示/撤回</button>
+        <transition name="animeDemo2" appear>
+            <h1 v-show="isShow">你好啊！</h1>
+        </transition>
+    </div>
+</template>
+
+<script>
+export default {
+    name: 'Test',
+    data() {
+        return {
+            isShow: true
+        }
+    }
+}
+</script>
+
+<style scoped>
+h1 {
+    background-color: orange;
+}
+
+/* 不使用动画，而使用过渡来实现效果 */
+/* 进入的起点、离开的终点 */
+.animeDemo2-enter, .animeDemo2-leave-to {
+    transform: translate(-100%);
+}
+
+/* 控制进入、离开过渡动画 */
+.animeDemo2-enter-active, .animeDemo2-leave-active {
+    transition: 0.5s linear;    /* transition 控制过渡效果 linear表示线性的 */
+}
+/* 离开的终点、进入的起点 */
+.animeDemo2-enter-to, .animeDemo2-leave {
+    transform: translate(0);
+}
+</style>
