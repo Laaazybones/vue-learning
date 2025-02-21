@@ -1,9 +1,11 @@
 <template>
     <div>
         <button @click="isShow = !isShow">显示/撤回</button>
-        <transition name="animeDemo2" appear>
-            <h1 v-show="isShow">你好啊！</h1>
-        </transition>
+        <!-- 当一个transition中需要包含多个元素（即一个列表）时，需要使用transition-group，并且要给每个元素添加key值 -->
+        <transition-group name="animeDemo2" appear>
+            <h1 v-show="isShow" key="1">你好啊！</h1>
+            <h1 v-show="!isShow" key="2">啦啦啦！</h1>
+        </transition-group>
     </div>
 </template>
 
