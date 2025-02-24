@@ -10,7 +10,7 @@ export default {
     name: 'App',
     methods: {
         getData() {
-            axios.get('http://localhost:8081/blog/208').then(
+            axios.get('http://localhost:8081/test/blog/208').then(
                 response => {
                     console.log('请求成功了', response.data)
                 },

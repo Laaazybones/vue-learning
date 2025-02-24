@@ -381,3 +381,64 @@ export default {
     ```
 
     （3）备注：若有多个元素需要过渡，则需要使用 `<transition-group>`, 且每个元素都需要指定 `key` 值。
+
+
+## Vue-cli脚手架配置代理
+
+### 方法一
+
+在 vue.config.js 中添加如下配置：
+
+```javascript
+module.exports = {
+    devServer: {
+        proxy: 'http://localhost:5000'  // 后端被代理的服务器地址
+    }
+}
+```
+
+说明：
+
+1. 优点：配置简单。
+
+2. 缺点：不能配置多个代理，不能灵活地控制请求是否走代理。
+
+3. 工作方式：若按照上述配置代理，当请求了前端不存在的资源时，该请求才会转发给服务器。（即优先匹配前端资源）
+
+
+### 方法二
+
+编写 vue.config.js 配置具体代理规则：
+
+```javascript
+module.exports = defineConfig({
+  transpileDependencies: true,
+  lintOnSave: false,  // 关闭自动语法检查
+
+  // 配置代理服务器（方式二）
+  devServer: {
+    proxy: {
+        // 匹配所有以'/test'开头的请求路径
+      '/test': {
+        target: 'http://localhost:8080',  // 被代理的后端服务器地址
+        pathRewrite: {'^/test':''},  // 路径重写，将代理的路径前缀去除
+        ws: true, // websocket 默认为true
+        changeOrigin: true, // 默认为true: 将请求地址模拟成被代理的后端服务器的地址（用于控制请求头中的host值）
+      },
+      // 匹配所有以'/test2'开头的请求路径
+      '/test2': {
+        target: 'http://localhost:8080',  // 被代理的后端服务器地址
+        pathRewrite: {'^/test2':''},  
+        ws: true, 
+        changeOrigin: true
+      }
+    }
+  }
+})
+```
+
+说明：
+
+1. 优点：可以配置多个代理，且可以灵活控制请求是否走代理。
+
+2. 缺点：配置略微繁琐，请求资源时必须加前缀。
