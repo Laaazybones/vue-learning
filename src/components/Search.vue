@@ -20,13 +20,18 @@ export default {
     },
     methods: {
         searchUsers() {
+            // 发起请求
+            this.$bus.$emit('getInfo', {isFirst:false, isLoading:true, errMsg:'', users:[]})
             axios.get(`https://api.github.com/search/users?q=${this.keyword}`).then(
                 response => {
                     console.log('请求成功了')
-                    this.$bus.$emit('getUsers', response.data.items)
+                    // 请求到数据
+                    this.$bus.$emit('getInfo', {isLoading:false, errMsg:'', users:response.data.items})
                 },
                 error => {
-                    console.log('请求失败了', error.message)
+                    console.log('请求失败了')
+                    // 请求数据失败
+                    this.$bus.$emit('getInfo', {isLoading:false, errMsg:error.message, users:[]})
                 }
             )
         }
