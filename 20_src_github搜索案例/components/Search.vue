@@ -9,7 +9,7 @@
 </template>
 
 <script>
-// import axios from 'axios';
+import axios from 'axios';
 
 export default {
     name: 'Search',
@@ -22,7 +22,7 @@ export default {
         searchUsers() {
             // 发起请求
             this.$bus.$emit('getInfo', {isFirst:false, isLoading:true, errMsg:'', users:[]})
-            this.$http.get(`https://api.github.com/search/users?q=${this.keyword}`).then(
+            axios.get(`https://api.github.com/search/users?q=${this.keyword}`).then(
                 response => {
                     console.log('请求成功了')
                     // 请求到数据
