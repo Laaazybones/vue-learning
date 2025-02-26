@@ -442,3 +442,110 @@ module.exports = defineConfig({
 1. 优点：可以配置多个代理，且可以灵活控制请求是否走代理。
 
 2. 缺点：配置略微繁琐，请求资源时必须加前缀。
+
+
+## 插槽
+
+1. 作用：让父组件可以向子组件指定位置插入html结构，也是一种组件间通信的方式，适用于 <font color="red">父组件 ===> 子组件</font>。
+
+2. 分类：默认插槽、具名插槽、作用域插槽。
+
+3. 使用方式：
+
+    （1）默认插槽：
+
+    ```html
+    <!-- 父组件中： -->
+    <Category>
+        <div>html结构1</div>
+    </Category>
+
+    <!-- 子组件中： -->
+    <template>
+        <div>
+            <!-- 定义插槽 -->
+            <slot>插槽默认内容</slot>
+        </div>
+    </template>
+    ```
+
+    （2）具名插槽：
+
+    ```html
+    <!-- 父组件中 -->
+    <Category>
+        <template slot="center">
+            <div>html结构1</div>
+        </template>
+        <template v-slot:footer>
+            <div>html结构2</div>
+        </template>
+    </Category>
+
+    <!-- 子组件中 -->
+    <template>
+        <div>
+            <!-- 定义插槽 -->
+            <slot name="center">插槽默认内容1</slot>
+            <slot name="footer">插槽默认内容2</slot>
+        </div>
+    </template>
+    ```
+
+    （3）作用域插槽：
+
+        - 理解：数据在定义插槽的组件中存储，可以根据插槽组件的使用者的实际需要定义数据呈现结构。
+
+        - 写法：
+
+
+    ```html
+        <!-- 父组件中 -->
+        <Category>
+            <template scop="getData">
+                <ul>
+                    <li v-for="(game, index) in getData.gamesData" :key="index">{{ game }}</li>
+                </ul>
+            </template>
+        </Category>
+
+        <Category title="游戏">
+            <template scope="{gamesData}">
+                <ol>
+                    <li v-for="(game, index) in gamesData" :key="index">{{ game }}</li>
+                </ol>
+            </template>
+        </Category>
+
+        <Category title="游戏">
+            <template slot-scope="getData">
+                <h4 v-for="(game, index) in getData.gamesData" :key="index">
+                    {{ game }}
+                </h4>
+            </template>
+        </Category>
+    ```
+
+    子组件中
+
+    ```html
+    <template>
+        <div>
+            <slot :games="games"></slot>
+        </div>
+    </template>
+    ```
+
+    ```javascript
+    <script>
+    export default {
+        name: 'Category',
+        props: ['title'],
+        data() {
+            return {
+                games: ['红色警戒', '穿越火线', '劲舞团', '超级玛丽']
+            }
+        }
+    }
+    </script>
+    ```
