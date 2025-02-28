@@ -40,6 +40,9 @@ export default {
                 this.sum += this.n
             }, 500)
         },
+    },
+    mounted() {
+        console.log('Count', this)
     }
 }
 </script>

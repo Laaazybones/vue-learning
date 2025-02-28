@@ -549,3 +549,56 @@ module.exports = defineConfig({
     }
     </script>
     ```
+
+
+
+## Vuex
+
+1. 概念
+
+在Vue中实现集中式状态（数据）管理的一个插件，对Vue应用中多个组件的共享状态进行集中管理（读/写），也是一种组件间通信的方式，且适用于任意组件间通信。
+
+2. 何时使用
+
+在多个组件间需要进行数据通信时使用。
+
+3. 搭建vuex环境
+
+    （1）创建文件：`src/store/index.js`
+
+    ```javascript
+    // 引入Vuex
+    import Vuex from 'vuex'
+    // 引入Vue
+    import Vue from 'vue'
+    // 使用Vuex
+    Vue.use(Vuex)
+
+    // 定义actions对象，用于响应组件中用户的行为
+    const actions = {}
+    // 定义mutations对象，用于修改state中的数据
+    const mutations = {}
+    // 定义state对象，用于存储具体的数据
+    const state = {}
+
+    // 定义store对象，并暴露
+    export default new Vuex.Store({
+        actions,
+        mutations,
+        state
+    })
+    ```
+
+    （2）在 `main.js` 中传入配置项
+
+    ```javascript
+    // 引入store
+    import store from './store'
+
+    new Vue({
+        el: '#app',
+        render: h => h(App),
+        store
+    })
+    ```
+
