@@ -1,6 +1,6 @@
 <template>
     <div>
-        <h1>求和结果为：{{ sum }}</h1>
+        <h1>求和结果为：{{ $store.state.sum }}</h1>
         <!-- 使用.number强制转换为数字 -->
         <select v-model.number="n">
             <option value="1">1</option>
@@ -19,26 +19,24 @@ export default {
     name: 'Count',
     data() {
         return {
-            sum: 0, // 求和
             n: 1    // 用户选择的加数
         }
     },
     methods: {
         increment() {
-            this.sum += this.n
+            // 当actions中的业务逻辑十分简单且与mutations中的逻辑一致时，可以直接调用commit
+            // this.$store.dispatch('increment', this.n)
+            this.$store.commit('INCREMENT', this.n)
         },
         decrement() {
-            this.sum -= this.n
+            // this.$store.dispatch('decrement', this.n)
+            this.$store.commit('DECREMENT', this.n)
         },
         incrementOdd() {
-            if (this.sum % 2) {
-                this.sum += this.n
-            }
+            this.$store.dispatch('incrementOdd', this.n)
         },
         incrementWait() {
-            setTimeout(()=>{
-                this.sum += this.n
-            }, 500)
+            this.$store.dispatch('incrementWait', this.n)
         },
     },
     mounted() {
